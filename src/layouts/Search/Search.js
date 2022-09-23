@@ -14,15 +14,15 @@ import { useDebounce } from '~/hooks';
 function Search() {
   const [searchValue, setSearchValue] = useState('');
   const [searchResult, setSearchResult] = useState([]);
-  const [showResult, setShowResult] = useState(true);
+  const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const deBounced = useDebounce(searchValue, 500);
+  const deBouncedValue = useDebounce(searchValue, 500);
 
   const inputRef = useRef();
 
   useEffect(() => {
-    if (!deBounced.trim()) {
+    if (!deBouncedValue.trim()) {
       setSearchResult([]);
       return;
     }
@@ -30,7 +30,7 @@ function Search() {
     const fetchApi = async () => {
       setLoading(true);
 
-      const result = await searchServices.search(deBounced);
+      const result = await searchServices.search(deBouncedValue);
 
       setSearchResult(result);
 
@@ -41,7 +41,7 @@ function Search() {
     };
 
     fetchApi();
-  }, [deBounced]);
+  }, [deBouncedValue]);
 
   const handleClear = () => {
     setSearchValue('');
